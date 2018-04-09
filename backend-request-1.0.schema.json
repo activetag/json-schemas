@@ -1,0 +1,87 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "http://theactivetag.com/schemas/backend-request-1.0.schema.json",
+    "title": "Запрос к бекенду",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "description": "Используемая JSON schema",
+            "type": "string",
+            "const": "http://theactivetag.com/schemas/backend-request-1.0.schema.json"
+        },
+        "client": {
+            "description": "Информация о клиенте",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Тип клиента",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "version": {
+                    "description": "Версия клиента",
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "required": ["name", "version"]
+        },
+        "language": {
+            "description": "Предпочитаемый язык клиента",
+            "type": "string"
+        },
+        "activetag": {
+            "description": "Активная метка",
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "userID": {
+            "description": "Идентификатор пользователя",
+            "type": "integer"
+        },
+        "fields": {
+            "description": "Заполненные поля формы",
+            "type": "object",
+            "patternProperties": {
+                "^\\w+$": {
+                    "description": "Поле формы",
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "description": "Содержимое поля",
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    },
+                    "required": ["value"]
+                }
+            },
+            "additionalProperties": false,
+            "minProperties": 1
+        },
+        "paid": {
+            "description": "Сумма совершённого платежа",
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]{2}$"
+        },
+        "additionalData": {
+            "description": "Дополнительная информация, переданная бекендом в предыдущем ответе",
+            "type": "object"
+        },
+        "context": {
+            "description": "Контекст запроса",
+            "type": "object",
+            "properties": {
+                "httpReferer": {
+                    "description": "HTTP-заголовок Referer",
+                    "type": "string"
+                },
+                "httpUserAgent": {
+                    "description": "HTTP-заголовок User-Agent",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "required": ["$schema", "client", "activetag", "userID"]
+}

@@ -1,0 +1,186 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$id": "http://theactivetag.com/schemas/backend-response-1.0.schema.json",
+    "title": "Ответ бекенда",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "description": "Используемая JSON schema",
+            "type": "string",
+            "const": "http://theactivetag.com/schemas/backend-response-1.0.schema.json"
+        },
+        "error": {
+            "description": "Ошибка",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Код ошибки",
+                    "type": "integer"
+                },
+                "desc": {
+                    "description": "Текстовое описание ошибки",
+                    "type": "string"
+                }
+            },
+            "required": ["code"]
+        },
+        "result": {
+            "description": "Содержимое ответа",
+            "type": "array",
+            "items": {
+                "description": "Список элементов содержимого ответа",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "Текстовое описание",
+                        "type": "string"
+                    },
+                    "markdown": {
+                        "description": "Описание в формате Markdown",
+                        "type": "string"
+                    },
+                    "html": {
+                        "description": "Описание в формате HTML",
+                        "type": "string"
+                    },
+                    "imgURL": {
+                        "description": "URL картинки",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "videoURL": {
+                        "description": "URL видео",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "redirectURL": {
+                        "description": "URL для перехода на внешний сайт",
+                        "type": "string",
+                        "format": "uri"
+                    }
+                }
+            },
+            "minItems": 1
+        },
+        "menu": {
+            "description": "Меню с вариантами возможных действий",
+            "type": "object",
+            "properties": {
+                "items": {
+                    "description": "Список пунктов меню",
+                    "type": "array",
+                    "items": {
+                        "description": "Пункт меню",
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "description": "Заголовок пункта меню",
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "url": {
+                                "description": "URL для передачи данных",
+                                "type": "string",
+                                "format": "uri"
+                            },
+                            "req": {
+                                "description": "Поля формы, необходимые для заполнения",
+                                "type": "array",
+                                "items": {
+                                    "description": "Поле формы",
+                                    "type": "object",
+                                    "properties": {
+                                        "type": {
+                                            "description": "Тип поля",
+                                            "type": "string",
+                                            "enum": [
+                                                "address",
+                                                "date",
+                                                "email",
+                                                "name",
+                                                "number",
+                                                "phone",
+                                                "select",
+                                                "text",
+                                                "text-multiline",
+                                                "time"
+                                            ]
+                                        },
+                                        "name": {
+                                            "description": "Идентификатор поля",
+                                            "type": "string",
+                                            "pattern": "^\\w+$"
+                                        },
+                                        "title": {
+                                            "description": "Заголовок поля",
+                                            "type": "string",
+                                            "minLength": 1
+                                        },
+                                        "desc": {
+                                            "description": "Описание поля",
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "description": "Предустановленное значение поля",
+                                            "type": "string"
+                                        },
+                                        "options": {
+                                            "description": "Список возможных значений для поля типа select",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "Элемент списка",
+                                                "type": "string"
+                                            },
+                                            "minItems": 1
+                                        },
+                                        "isHidden": {
+                                            "description": "Флаг, указывающий, что поле не должно показываться пользователю",
+                                            "type": "boolean"
+                                        },
+                                        "needVerification": {
+                                            "description": "Требование верификации поля клиентом",
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "required": ["type", "name", "title"]
+                                },
+                                "minItems": 1
+                            },
+                            "cost": {
+                                "description": "Стоимость для совершения платежа",
+                                "type": "string",
+                                "pattern": "^[0-9]+\\.[0-9]{2}$"
+                            },
+                            "basketID": {
+                                "description": "Идентификатор корзины",
+                                "type": "string"
+                            },
+                            "instantCheckout": {
+                                "description": "Оформление заказа сразу после добавления в корзину",
+                                "type": "boolean"
+                            }
+                        },
+                        "required": ["name"]
+                    },
+                    "minItems": 1
+                }
+            },
+            "required": ["items"]
+        },
+        "properties": {
+            "description": "Дополнительные параметры ответа",
+            "type": "object",
+            "properties": {
+                "disable_text_menu": {
+                    "description": "Отключение текстового меню при выводе ответа в Telegram",
+                    "type": "boolean"
+                }
+            }
+        },
+        "additionalData": {
+            "description": "Дополнительная информация, которая должна быть передана в следующем запросе к бекенду",
+            "type": "object"
+        }
+    },
+    "required": ["$schema", "result"]
+}
