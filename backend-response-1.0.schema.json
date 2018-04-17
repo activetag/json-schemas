@@ -99,6 +99,7 @@
                                                 "email",
                                                 "name",
                                                 "number",
+                                                "password",
                                                 "phone",
                                                 "select",
                                                 "text",
